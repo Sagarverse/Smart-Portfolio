@@ -2,6 +2,58 @@
 
 A full-stack, production-ready personal productivity web application with portfolio, real-time clipboard sync, notes, file storage, and more.
 
+---
+
+## 👤 About Me
+
+**Sagar M**  
+Bengaluru, Karnataka 562112  
+📞 +91 9019989269  
+✉️ sagisagar1974@gmail.com  
+[LinkedIn](https://www.linkedin.com/in/sagar-m-32aa951b4) | [GitHub](https://github.com/sgrkannada)
+
+### 🎯 Career Objective
+Motivated **Data Science** student seeking an **entry-level role** to apply **Python** and **software skills** in **AI-driven projects**, solving real-world problems while contributing to company growth.
+
+### 📝 Professional Summary
+Data Science student skilled in **Python, SQL, and C**, with hands-on experience in **AI and IoT solutions**.  
+🏆 Winner – Udaya 1.0 Hackathon and NASA Space Apps Challenge Global Nominee.  
+Recognized for innovation, adaptability, and teamwork in building AI-powered real-world projects.
+
+### 🎓 Education
+- **B.Tech in Data Science** — Dayananda Sagar University, Bengaluru *(Expected 2027)*
+- **PUC** — Sri Sapthagiri PU College *(2021–2023, 91.3%)*
+- **SSLC** — Karnataka Public School *(2018–2021, 95.4%)*
+
+### 💻 Technical Skills
+- **Programming:** Python, SQL, C, Java, JavaScript, HTML/CSS, Dart
+- **Frameworks:** Flutter, Android Studio, React.js, Node.js, Express.js, Bootstrap
+- **Data Science:** Pandas, NumPy, Scikit-learn, TensorFlow (Basic), Jupyter, MATLAB
+- **Databases:** MySQL
+- **Cloud & Tools:** Microsoft Azure, Git, GitHub, VS Code
+- **Creative Tools:** MS Office, Adobe Photoshop, Adobe Premiere Pro
+
+### 🚀 Projects & Achievements
+- **Udaya 1.0 Hackathon Winner** — Rs.15,000 (AgriConnect – AI Agriculture)
+- **NASA Space Apps Challenge** — Global Nominee (Recycle in Mars)
+- **DSU DevHack 2.0** — $1000 Vultr Cloud Credit Winner
+- **YUVAI Initiative** — Top 50 National Participant (AI Social Impact)
+- **NTT Data Trainee** — Skill Enhancement Program
+- Developed **10+ Cross-platform apps** using Flutter and Android Studio
+
+### 📜 Certifications
+- **Microsoft Azure DP-900: Azure Data Fundamentals**
+- **Oracle AI Foundation Certificate**
+- **Oracle Data Science Professional**
+- Snowflake for Developers – Udemy
+- Industrial IoT for Automation
+- SQL for Beginners & Advanced SQL
+
+### 🤝 Soft Skills
+Adaptability, Leadership, Team Work, Time Management, Dedication, Discipline, Creative Problem Solving, Communication
+
+---
+
 ## Tech Stack
 
 ## Features
