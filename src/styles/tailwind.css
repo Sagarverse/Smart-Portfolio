@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+    --color-glass-white: rgba(255, 255, 255, 0.03);
+    --color-glass-border: rgba(255, 255, 255, 0.1);
+}
+
+@layer base {
+    body {
+        background: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #0a0a0a 100%);
+        @apply min-h-screen text-slate-200 antialiased;
+    }
+}
+
+@layer utilities {
+    .glass-card {
+        background: var(--color-glass-white);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--color-glass-border);
+        @apply rounded-3xl shadow-2xl;
+    }
+
+    .glass-glow {
+        @apply absolute -z-10 blur-[100px] opacity-20 transition-all duration-700;
+    }
+}

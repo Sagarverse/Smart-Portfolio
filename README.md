@@ -1,40 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# Personal Productivity Hub
 
-## Getting Started
+A full-stack, production-ready personal productivity web application with portfolio, real-time clipboard sync, notes, file storage, and more.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup
 
-You can start editing the page by modifying `app/route.ts`. The page auto-updates as you edit the file.
+1. **Clone the repo & install dependencies:**
+	```sh
+	npm install
+	```
+2. **Configure environment variables:**
+	- Copy `.env.example` to `.env` and fill in your secrets.
+3. **Set up PostgreSQL & Prisma:**
+	```sh
+	npx prisma migrate dev --name init
+	npx prisma generate
+	```
+4. **Run the development server:**
+	```sh
+	npm run dev
+	```
+5. **Deploy:**
+   - Deploy to Netlify (see instructions below) or your preferred platform.
 
-## Learn More
+## Folder Structure
+1. Push your project to GitHub.
+2. In Netlify, create a new site from Git and select your repo.
+3. Build command: `npm run build`
+4. Publish directory: leave empty (Next.js plugin handles this)
+5. Add environment variables in Netlify dashboard (from your `.env` file):
+   - `DATABASE_URL`, `JWT_SECRET`, Firebase keys, Google OAuth keys, email vars, etc.
+6. Deploy!
+7. Edit code locally, push to GitHub, Netlify auto-redeploys.
+8. For env var changes, update them in Netlify dashboard and redeploy.
+- `/src/app/api` — API routes (auth, clipboard, notes, files, dashboard)
+- `/src/components` — UI components
+- **Login Modal for Guests:**
+  - Unauthenticated users see a dismissible login popup on landing page.
+  - Modal can be closed for guest viewing, reappears next session until login.
+- **Clipboard Sync Across Devices:**
+  - Real-time clipboard sync using Socket.io.
+  - Sign in with the same account on multiple devices to instantly sync clipboard history.
+- `/src/hooks` — Custom hooks
+- `/src/store` — Zustand stores
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## API Routes
-
-This directory contains example API routes for the headless API app.
-
-For more details, see [route.js file convention](https://nextjs.org/docs/app/api-reference/file-conventions/route).
+## License
+- `/src/lib` — Prisma, Firebase, Socket.io, etc.
