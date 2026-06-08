@@ -1,9 +1,11 @@
 "use client";
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUserStore } from '@/store/useUserStore';
 
 export default function AuthModal() {
+  const pathname = usePathname();
   const [showModal, setShowModal] = useState(false);
   const [mounted, setMounted] = useState(false);
   const user = useUserStore((s) => s.user);
@@ -34,7 +36,7 @@ export default function AuthModal() {
     setShowModal(false);
   };
 
-  if (!mounted || user || !showModal) return null;
+  if (!mounted || user || !showModal || pathname === '/') return null;
 
   return (
     <AnimatePresence>
