@@ -1,57 +1,100 @@
 "use client";
-import { motion } from 'framer-motion';
+
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { useRef } from 'react';
 
 export default function AboutSection() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start 80%", "end 40%"]
+  });
+
+  const paragraph = "I build things at the intersection of design and engineering. From AI-powered agriculture platforms that won national hackathons, to Android cybersecurity suites used by professionals, to being nominated globally by NASA from 57,000+ participants — I approach every project with obsessive attention to craft, performance, and user experience.";
+  const words = paragraph.split(" ");
+
   return (
-    <section className="py-32 px-4 relative overflow-hidden" id="about">
-      <div className="max-w-4xl mx-auto">
+    <section className="relative py-40 md:py-56 px-6 md:px-16" id="about" ref={containerRef}>
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Section Number + Title — Editorial Style */}
+        <div className="flex items-start gap-6 md:gap-12 mb-20 md:mb-32">
+          <motion.span
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-[10px] font-mono tracking-[0.3em] text-neutral-600 uppercase mt-2 shrink-0"
+          >
+            ( 01 )
+          </motion.span>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-sm font-mono tracking-[0.3em] text-neutral-500 uppercase"
+          >
+            About
+          </motion.h2>
+        </div>
+
+        {/* Text Scrub — Large Editorial */}
+        <div className="max-w-5xl ml-auto md:pl-24">
+          <p className="text-2xl md:text-[2.8rem] leading-[1.3] tracking-[-0.02em] font-light">
+            {words.map((word, i) => (
+              <Word key={i} word={word} index={i} total={words.length} progress={scrollYProgress} />
+            ))}
+          </p>
+        </div>
+
+        {/* Pull Quote — Italic Serif */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative p-10 md:p-16 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl"
+          className="mt-24 md:mt-40 max-w-3xl"
         >
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" />
-              <path d="M2 17L12 22L22 17" />
-              <path d="M2 12L12 17L22 12" />
-            </svg>
-          </div>
-
-          <h2 className="text-4xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
-            The Vision
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
-              <p>
-                I am <span className="text-white font-semibold">Sagar M.</span>, a developer and <span className="text-blue-400">B.Tech Data Science</span> student at <span className="text-blue-400">Dayananda Sagar University</span> specializing in the intersection of AI, IoT, and high-performance full-stack architectures.
-              </p>
-              <p>
-                As a winner of the <span className="text-purple-400 font-bold">Udaya 1.0 Hackathon</span> and a <span className="text-blue-400 font-bold">NASA Space Apps Challenge</span> Nominee, my focus is on engineering scalable solutions that unify complex backend systems with fluid, premium user interfaces.
-              </p>
-            </div>
-            <div className="flex flex-col justify-center space-y-4">
-              <div className="p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-blue-500/30 transition-all hover:bg-white/10 group">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-xl">🎓</span>
-                  <h4 className="text-blue-400 font-bold uppercase tracking-widest text-xs">Education</h4>
-                </div>
-                <p className="text-sm text-gray-400 font-medium">B.Tech in Data Science, Dayananda Sagar University. (Specialization in AI & IoT)</p>
-              </div>
-              <div className="p-5 rounded-2xl bg-white/5 border border-white/5 hover:border-purple-500/30 transition-all hover:bg-white/10 group">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-xl">🏆</span>
-                  <h4 className="text-purple-400 font-bold uppercase tracking-widest text-xs">Innovation</h4>
-                </div>
-                <p className="text-sm text-gray-400 font-medium">Udaya 1.0 Winner | NASA Space Apps Nominee | DevHack 2.0 Cloud Lead</p>
-              </div>
-            </div>
-          </div>
+          <blockquote className="text-3xl md:text-5xl font-serif italic text-neutral-300 leading-[1.2] tracking-[-0.02em]">
+            "Engineering is not just about code — it's about crafting experiences that feel inevitable."
+          </blockquote>
         </motion.div>
+
+        {/* Stats — Minimal */}
+        <div className="mt-24 md:mt-32 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.04]">
+          {[
+            { value: "12+", label: "Projects" },
+            { value: "4×", label: "Hackathon Wins" },
+            { value: "8.67", label: "CGPA" },
+            { value: "25+", label: "Repositories" },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-[#0a0a0a] p-8 md:p-12"
+            >
+              <p className="text-3xl md:text-5xl font-black text-white tracking-tight mb-3">{stat.value}</p>
+              <p className="text-[11px] font-mono tracking-[0.2em] uppercase text-neutral-600">{stat.label}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
+  );
+}
+
+function Word({ word, index, total, progress }: { word: string; index: number; total: number; progress: MotionValue<number> }) {
+  const start = index / total;
+  const end = start + (1 / total);
+
+  const opacity = useTransform(progress, [start, end], [0.12, 1]);
+  const color = useTransform(progress, [start, end], ["#262626", "#e5e5e5"]);
+
+  return (
+    <motion.span style={{ opacity, color }} className="inline-block mr-[0.3em]">
+      {word}
+    </motion.span>
   );
 }

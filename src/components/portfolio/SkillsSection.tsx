@@ -1,84 +1,69 @@
 "use client";
+
 import { motion } from 'framer-motion';
 
-const skillCategories = [
-  {
-    title: 'Development Hub',
-    skills: [
-      { name: 'Python & SQL', icon: '🐍' },
-      { name: 'JavaScript & React', icon: '⚛️' },
-      { name: 'Flutter & Dart', icon: '📱' },
-      { name: 'Node.js & Express', icon: '🟢' },
-    ],
-  },
-  {
-    title: 'Data Science & AI',
-    skills: [
-      { name: 'Pandas & NumPy', icon: '📊' },
-      { name: 'Scikit-learn', icon: '🤖' },
-      { name: 'TensorFlow', icon: '🧠' },
-      { name: 'MATLAB', icon: '📉' },
-    ],
-  },
-  {
-    title: 'Infrastructure',
-    skills: [
-      { name: 'Microsoft Azure', icon: '🟦' },
-      { name: 'Firebase', icon: '🔥' },
-      { name: 'Prisma & PostgreSQL', icon: '💎' },
-      { name: 'Git & GitHub', icon: '🚀' },
-    ],
-  },
+const skillGroups = [
+  { label: "Languages", items: "Java · Python · JavaScript · Kotlin · Dart · SQL · C · Solidity" },
+  { label: "Frontend", items: "React.js · Next.js · Tailwind CSS · Framer Motion · HTML5 · CSS3" },
+  { label: "Backend", items: "Node.js · Express.js · REST APIs · GraphQL · Prisma · Firebase" },
+  { label: "AI / ML", items: "TensorFlow · PyTorch · Scikit-learn · LangChain · OpenCV · Pandas · NumPy" },
+  { label: "GenAI", items: "Claude API · GPT-4 · Prompt Engineering · RAG · Pinecone · ChromaDB" },
+  { label: "Mobile", items: "Flutter · Jetpack Compose · Material 3 · MVVM · Room DB · Hilt DI" },
+  { label: "Cloud", items: "Azure (DP-900) · AWS · Docker · GitHub Actions · Vercel · Terraform" },
+  { label: "Databases", items: "PostgreSQL · MongoDB · Firebase Firestore · Redis · Supabase · SQLite" },
+  { label: "Security", items: "Ethical Hacking · OWASP Top 10 · Penetration Testing · Network Scanning" },
+  { label: "Blockchain", items: "Ethereum · Solidity · Smart Contracts · DApps · Supply-Chain" },
 ];
 
 export default function SkillsSection() {
   return (
-    <section className="py-40 px-4 relative overflow-hidden" id="skills">
-      {/* Background Section Detail */}
-      <div className="absolute top-1/2 left-0 w-64 h-64 bg-cyan-500/5 blur-[120px] rounded-full -z-10" />
-
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-24"
-        >
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500 mb-4 block">Proven expertise</span>
-          <h2 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">Tech Stack</h2>
-          <div className="w-24 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {skillCategories.map((category, idx) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0, y: 40 }}
+    <section className="relative py-40 md:py-56 px-6 md:px-16" id="skills">
+      <div className="max-w-7xl mx-auto">
+        
+        {/* Header */}
+        <div className="flex items-start gap-6 md:gap-12 mb-20 md:mb-32">
+          <span className="text-[10px] font-mono tracking-[0.3em] text-neutral-600 uppercase mt-2 shrink-0">( 02 )</span>
+          <div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="glass-card p-10 group hover:border-white/20 transition-all relative overflow-hidden"
+              className="text-sm font-mono tracking-[0.3em] text-neutral-500 uppercase mb-6"
             >
-              {/* Card Glow */}
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-blue-500/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+              Capabilities
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-3xl md:text-5xl font-serif italic text-neutral-300 max-w-2xl leading-[1.2]"
+            >
+              The tools I use to bring ideas to life.
+            </motion.p>
+          </div>
+        </div>
 
-              <h3 className="text-2xl font-black mb-8 text-white group-hover:text-blue-400 transition-colors">
-                {category.title}
-              </h3>
-
-              <div className="space-y-6">
-                {category.skills.map((skill, sIdx) => (
-                  <motion.div
-                    key={skill.name}
-                    className="flex items-center gap-4 text-gray-400 group-hover:text-gray-200 transition-colors"
-                    whileHover={{ x: 5 }}
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-xl shadow-sm">
-                      {skill.icon}
-                    </div>
-                    <span className="font-bold tracking-tight text-lg">{skill.name}</span>
-                  </motion.div>
-                ))}
+        {/* Skills Table */}
+        <div className="border-t border-white/[0.04]">
+          {skillGroups.map((group, idx) => (
+            <motion.div
+              key={group.label}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.03 }}
+              className="group grid grid-cols-12 gap-4 py-6 md:py-8 border-b border-white/[0.04] hover:bg-white/[0.01] transition-colors duration-500 px-2 md:px-4 items-baseline"
+            >
+              <div className="col-span-12 md:col-span-3">
+                <span className="text-xs font-mono tracking-[0.2em] uppercase text-neutral-500 group-hover:text-neutral-300 transition-colors">
+                  {group.label}
+                </span>
+              </div>
+              <div className="col-span-12 md:col-span-9">
+                <p className="text-base md:text-lg text-neutral-400 group-hover:text-neutral-200 transition-colors font-light tracking-wide">
+                  {group.items}
+                </p>
               </div>
             </motion.div>
           ))}

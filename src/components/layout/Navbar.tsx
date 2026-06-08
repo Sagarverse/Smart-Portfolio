@@ -1,147 +1,180 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useUserStore } from '@/store/useUserStore';
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { X, Download } from 'lucide-react';
 
-const navItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: '📊' },
-    { name: 'Notes', href: '/notes', icon: '📝' },
-    { name: 'Clipboard', href: '/clipboard', icon: '📋' },
-    { name: 'Files', href: '/files', icon: '📁' },
-    { name: 'Todo', href: '/todo', icon: '✅' },
+const links = [
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Work', href: '#projects' },
+    { name: 'Awards', href: '#experience' },
+    { name: 'Contact', href: '#contact' },
 ];
 
 export default function Navbar() {
     const pathname = usePathname();
-    const user = useUserStore((s) => s.user);
-    const [isOpen, setIsOpen] = useState(false);
-    const [mounted, setMounted] = useState(false);
+    const [hidden, setHidden] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [resumeOpen, setResumeOpen] = useState(false);
+    const { scrollY } = useScroll();
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        const previous = scrollY.getPrevious();
+        if (previous !== undefined && latest > previous && latest > 200) {
+            setHidden(true);
+            setMobileOpen(false);
+        } else {
+            setHidden(false);
+        }
+    });
 
-    if (pathname === '/login' || pathname === '/register') return null;
-    if (!mounted) return null;
+    if (pathname && pathname !== '/' && !pathname.startsWith('/#')) return null;
 
     return (
-        <nav className="fixed bottom-6 left-0 right-0 z-50 px-4 pointer-events-none">
-            <motion.div
-                initial={{ y: 100, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-                className="max-w-2xl mx-auto px-6 py-3 rounded-[2.5rem] border border-white/10 bg-gray-900/40 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-between pointer-events-auto relative overflow-hidden group"
+        <>
+            <motion.nav
+                variants={{ visible: { y: 0 }, hidden: { y: "-100%" } }}
+                animate={hidden ? "hidden" : "visible"}
+                transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] as any }}
+                className="fixed top-0 left-0 right-0 z-[100] mix-blend-difference"
             >
-                {/* Inner Glow Effect */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.05] to-transparent pointer-events-none" />
+                <div className="px-6 md:px-16">
+                    <div className="flex items-center justify-between h-20 md:h-24">
+                        {/* Logo */}
+                        <Link href="/" className="magnetic">
+                            <span className="text-[11px] font-mono tracking-[0.3em] uppercase text-white">
+                                Sagar M.
+                            </span>
+                        </Link>
 
-                <div className="flex items-center gap-8 relative z-10">
-                    <Link href="/" className="group/logo flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-xs shadow-lg shadow-blue-500/20 group-hover/logo:scale-110 transition-transform">
-                            ✨
-                        </div>
-                        <span className="text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">
-                            SGR
-                        </span>
-                    </Link>
-
-                    <div className="h-6 w-px bg-white/10 mx-2" />
-
-                    <div className="flex items-center gap-1 md:gap-4">
-                        {navItems.map((item) => {
-                            const isActive = pathname === item.href;
-                            return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={`relative px-4 py-2 flex items-center gap-2 text-sm font-semibold transition-all duration-300 ${isActive ? 'text-white' : 'text-gray-400 hover:text-gray-200 hover:bg-white/5 rounded-2xl'}`}
+                        {/* Desktop Links */}
+                        <div className="hidden md:flex items-center gap-10">
+                            {links.map((link) => (
+                                <motion.a
+                                    key={link.name}
+                                    href={link.href}
+                                    className="text-[11px] font-mono tracking-[0.2em] uppercase text-white/60 hover:text-white transition-colors duration-300 magnetic"
+                                    whileHover={{ y: -2 }}
                                 >
-                                    {isActive && (
-                                        <motion.div
-                                            layoutId="active-pill"
-                                            className="absolute inset-0 bg-white/10 rounded-2xl z-[-1] shadow-[0_0_20px_rgba(255,255,255,0.05)]"
-                                            transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                                        />
-                                    )}
-                                    <span className="text-base">{item.icon}</span>
-                                    <span className="hidden md:block">{item.name}</span>
-                                </Link>
-                            );
-                        })}
+                                    {link.name}
+                                </motion.a>
+                            ))}
+                        </div>
+
+                        {/* Résumé + Mobile Toggle */}
+                        <div className="flex items-center gap-6">
+                            <button
+                                onClick={() => setResumeOpen(true)}
+                                className="hidden md:block text-[11px] font-mono tracking-[0.2em] uppercase text-white/60 hover:text-white transition-colors magnetic"
+                            >
+                                Résumé ↗
+                            </button>
+
+                            <button
+                                className="md:hidden flex flex-col gap-[5px] p-2 magnetic"
+                                onClick={() => setMobileOpen(!mobileOpen)}
+                                aria-label="Menu"
+                            >
+                                <motion.span className="block w-5 h-[1px] bg-white origin-left" animate={mobileOpen ? { rotate: 45 } : { rotate: 0 }} />
+                                <motion.span className="block w-5 h-[1px] bg-white" animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }} />
+                                <motion.span className="block w-5 h-[1px] bg-white origin-left" animate={mobileOpen ? { rotate: -45 } : { rotate: 0 }} />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4 relative z-10">
-                    {user ? (
-                        <div className="relative">
-                            <motion.button
-                                onClick={() => setIsOpen(!isOpen)}
-                                className="w-10 h-10 flex items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-blue-500/20 to-purple-600/20 hover:border-blue-400/50 transition-all group"
-                                title={`Account - ${user.name || user.email}`}
-                            >
-                                <span className="text-lg group-hover:scale-110 transition-transform">👤</span>
-                            </motion.button>
+                {/* Mobile Menu — Full Screen */}
+                <motion.div
+                    initial={false}
+                    animate={mobileOpen ? { opacity: 1, pointerEvents: "auto" as any } : { opacity: 0, pointerEvents: "none" as any }}
+                    transition={{ duration: 0.4 }}
+                    className="md:hidden fixed inset-0 top-20 bg-[#0a0a0a]/98 backdrop-blur-xl z-50 flex flex-col justify-center px-6"
+                >
+                    {links.map((link, i) => (
+                        <motion.a
+                            key={link.name}
+                            href={link.href}
+                            onClick={() => setMobileOpen(false)}
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={mobileOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                            transition={{ delay: i * 0.05, duration: 0.3 }}
+                            className="text-4xl font-black tracking-tight text-white py-4 border-b border-white/[0.04]"
+                        >
+                            {link.name}
+                        </motion.a>
+                    ))}
+                    <motion.button
+                        onClick={() => {
+                            setMobileOpen(false);
+                            setResumeOpen(true);
+                        }}
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={mobileOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+                        transition={{ delay: links.length * 0.05, duration: 0.3 }}
+                        className="text-4xl font-black tracking-tight text-neutral-400 py-4 border-b border-white/[0.04] text-left"
+                    >
+                        Résumé
+                    </motion.button>
+                </motion.div>
+            </motion.nav>
 
-                            {/* Account Dropdown Menu */}
-                            {isOpen && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                    className="absolute top-14 right-0 w-64 rounded-2xl border border-white/10 bg-gray-900/95 backdrop-blur-xl shadow-2xl overflow-hidden"
-                                >
-                                    {/* User Info */}
-                                    <div className="px-4 py-4 border-b border-white/5 bg-gradient-to-br from-blue-500/10 to-purple-600/10">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-black text-sm">
-                                                {(user.name || user.email)[0].toUpperCase()}
-                                            </div>
-                                            <div>
-                                                <p className="text-white font-bold text-sm">{user.name || 'User'}</p>
-                                                <p className="text-gray-400 text-xs truncate">{user.email}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Menu Items */}
-                                    <div className="py-2">
-                                        <Link
-                                            href="/dashboard"
-                                            onClick={() => setIsOpen(false)}
-                                            className="flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 transition-all border-l-2 border-transparent hover:border-blue-500"
-                                        >
-                                            <span className="text-lg">📊</span>
-                                            <span className="text-sm font-medium">Dashboard</span>
-                                        </Link>
-                                        <button
-                                            onClick={() => {
-                                                setIsOpen(false);
-                                                // Settings logic here
-                                                alert('Settings coming soon!');
-                                            }}
-                                            className="w-full flex items-center gap-3 px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 transition-all border-l-2 border-transparent hover:border-purple-500 text-left"
-                                        >
-                                            <span className="text-lg">⚙️</span>
-                                            <span className="text-sm font-medium">Settings</span>
-                                        </button>
-                                        <hr className="my-2 border-white/5" />
-                                        <Link
-                                            href="/logout"
-                                            onClick={() => setIsOpen(false)}
-                                            className="flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all border-l-2 border-transparent hover:border-red-500"
-                                        >
-                                            <span className="text-lg">🚪</span>
-                                            <span className="text-sm font-medium">Logout</span>
-                                        </Link>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </div>
-                    ) : null}
-                </div>
-            </motion.div>
-        </nav>
+            {/* Resume Modal Overlay */}
+            <AnimatePresence>
+                {resumeOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+                        className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 md:p-12 bg-black/80 backdrop-blur-md"
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+                            transition={{ delay: 0.1, duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+                            className="relative w-full max-w-5xl h-full max-h-[90vh] bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+                        >
+                            {/* Modal Header */}
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200 bg-neutral-50/80 backdrop-blur">
+                                <div className="flex items-center gap-4">
+                                    <h3 className="text-sm font-semibold text-neutral-800">Sagar M. Résumé</h3>
+                                    <span className="hidden sm:inline-block px-2.5 py-1 rounded bg-neutral-200 text-[10px] font-mono font-medium text-neutral-600 uppercase tracking-widest">
+                                        PDF Version
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <a
+                                        href="/resume.pdf"
+                                        download
+                                        className="flex items-center gap-2 px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-medium rounded-full transition-colors"
+                                    >
+                                        <Download className="w-3.5 h-3.5" />
+                                        <span>Download</span>
+                                    </a>
+                                    <button
+                                        onClick={() => setResumeOpen(false)}
+                                        className="w-8 h-8 flex items-center justify-center rounded-full bg-neutral-200 hover:bg-neutral-300 text-neutral-600 transition-colors"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            {/* PDF Viewer */}
+                            <div className="flex-1 w-full bg-neutral-100">
+                                <iframe
+                                    src="/resume.pdf"
+                                    className="w-full h-full border-0"
+                                    title="Sagar M. Resume"
+                                />
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
     );
 }
